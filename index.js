@@ -59,8 +59,8 @@ function login(){
     }
   });
   detail_me = get_detail(me["uid"]);
-  query("#my_follows a").innerHTML=detail_me["profile"]["follows"];
-  query("#my_followers a").innerHTML=detail_me["profile"]["followeds"];
+  query("#my_follows").innerHTML=detail_me["profile"]["follows"];
+  query("#my_followers").innerHTML=detail_me["profile"]["followeds"];
 }
 
 
