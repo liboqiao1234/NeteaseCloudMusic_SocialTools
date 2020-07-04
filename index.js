@@ -20,7 +20,7 @@ var ajax = function (opt){
   }
   xhr.onreadystatechange = function(){
       if(xhr.readyState == 4 && xhr.status == 200){
-        opt.success(xhr.responseText);
+        opt.success&&opt.success(xhr.responseText);
       }
   }
 }
@@ -28,7 +28,7 @@ var debug = function (name){
   console.log(name);
 }
 //
-
+uid=0;
 function login(){
   var username=query("#phonenum").value;
   var password=query("#password").value;
@@ -38,6 +38,22 @@ function login(){
     type:"post",
     url:"http://192.168.3.17:3000/login/cellphone/",
     data:{"phone":username,"password":password},
+    success:function(e){
+      var tmp=JSON.parse(e);
+      debug(tmp["account"]["id"]);
+      uid=e["account"]["id"];
+    }
+  });
+}
+
+function get_fans(id){
+  ajax({
+    type:"get",
+    url:"192.168.3.17:3000/user/followeds/",
+    data:{
+      "uid":id,
+      "limit":1000
+    },
     success:function(e){
       debug(e);
     }
