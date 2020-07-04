@@ -28,7 +28,20 @@ var debug = function (name){
   console.log(name);
 }
 //
-uid=0;
+me={"uid":1,"nickname":"网易云音乐","follows":0,"followers":0};
+detail_me={};
+function get_detail(id){
+  var res={};
+  ajax({
+    type:"post",
+    url:"http://192.168.3.17:3000/user/detail/",
+    data:{"uid":id},
+    success:function(e){
+      res=JSON.parse(e);
+    }
+  });
+  return res;
+}
 function login(){
   var username=query("#phonenum").value;
   var password=query("#password").value;
@@ -40,16 +53,21 @@ function login(){
     data:{"phone":username,"password":password},
     success:function(e){
       var tmp=JSON.parse(e);
-      debug(tmp["account"]["id"]);
-      uid=e["account"]["id"];
+      me["uid"]=tmp["account"]["id"];
+      query("#my_nickname").innerHTML=tmp["profile"]["nickname"];
+      query("#my_uid").innerHTML=tmp["account"]["id"];
     }
   });
+  detail_me = get_detail(me["uid"]);
+  query("#my_follows a").innerHTML=detail_me["profile"]["follows"];
+  query("#my_followers a").innerHTML=detail_me["profile"]["followeds"];
 }
+
 
 function get_fans(id){
   ajax({
     type:"get",
-    url:"192.168.3.17:3000/user/followeds/",
+    url:"http://192.168.3.17:3000/user/followeds/",
     data:{
       "uid":id,
       "limit":1000
