@@ -33,5 +33,13 @@ function login(){
   var username=query("#phonenum").value;
   var password=query("#password").value;
   // debug(username+" "+password);
-  ajax({type:"get",url:"index.js",success:function(e){debug(e)}});
+  // ajax({type:"get",url:"index.js",success:function(e){debug(e)}});
+  ajax({
+    type:"post",
+    url:"http://192.168.3.17:3000/login/cellphone/",
+    data:{"phone":username,"password":password},
+    success:function(e){
+      debug(e);
+    }
+  });
 }
